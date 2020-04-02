@@ -11,7 +11,7 @@ pairs = list()
 
 while True:
 	to_select = [item for pair in pairs for item in pair]
-	to_select.append(aws)
+	to_select.append(aws_persistent)
 	readable, _, _ = select.select(to_select, [], [])
 	if aws_persistent in readable:
 		_ = aws_persistent.recv(1)
