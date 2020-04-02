@@ -26,7 +26,7 @@ while True:
 	to_select.append(incoming_sshs)
 	readable, _, _ = select.select(to_select, [], [])
 	if incoming_sshs in readable:
-		desktop.send('X')
+		desktop.send(b'X')
 		incoming_ssh, _ = incoming_sshs.accept()
 		pending_sshs.append(incoming_ssh)
 
