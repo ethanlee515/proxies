@@ -5,9 +5,8 @@ import select
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serversocket.bind(('0.0.0.0', 8030))
-serversocket.listen(1)
+serversocket.listen(5)
 desktop, _ = serversocket.accept()
-serversocket.close()
 
 usable_tcps = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 usable_tcps.bind(('0.0.0.0', 8032))
@@ -24,6 +23,7 @@ while True:
 	to_select = [item for pair in pairs for item in pair]
 	to_select.append(usable_tcps)
 	to_select.append(incoming_sshs)
+	to_select.append(serversocket)
 	readable, _, _ = select.select(to_select, [], [])
 	if incoming_sshs in readable:
 		desktop.send(b'X')
@@ -40,4 +40,6 @@ while True:
 		if pair[1] in readable:
 			pair[0].send(pair[1].recv(1024))
 
+	if serversocket in readable:
+		desktop, _ = serversocket.accept()
 
